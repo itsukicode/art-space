@@ -10,7 +10,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,6 +45,43 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun ArtSpaceScreen() {
+
+    var currentArtImage by remember {
+        mutableStateOf(R.drawable.art1)
+    }
+    var currentArtTitle by remember {
+        mutableStateOf(R.string.title1)
+    }
+    var currentArtist by remember {
+        mutableStateOf(R.string.title1_artist)
+    }
+    var currentArtYear by remember {
+        mutableStateOf(R.string.title1_year)
+    }
+
+    fun handleClickNext() {
+        when (currentArtTitle) {
+            R.string.title1 -> {
+                currentArtImage = R.drawable.art2
+                currentArtTitle = R.string.title2
+                currentArtist = R.string.title2_artist
+                currentArtYear = R.string.title2_year
+            }
+            R.string.title2 -> {
+                currentArtImage = R.drawable.art3
+                currentArtTitle = R.string.title3
+                currentArtist = R.string.title3_artist
+                currentArtYear = R.string.title3_year
+            }
+            R.string.title3-> {
+                currentArtImage = R.drawable.art1
+                currentArtTitle = R.string.title1
+                currentArtist = R.string.title1_artist
+                currentArtYear = R.string.title1_year
+            }
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -52,7 +90,7 @@ fun ArtSpaceScreen() {
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
-            painter = painterResource(id = R.drawable.art1),
+            painter = painterResource(currentArtImage),
             contentDescription = null,
             modifier = Modifier
                 .border(
@@ -72,13 +110,16 @@ fun ArtSpaceScreen() {
                 modifier = Modifier.padding(10.dp)
             ) {
                 Text(
-                    text = "Artwork Title", fontSize = 30.sp
+                    text = stringResource(currentArtist), fontSize = 30.sp
                 )
                 Row {
-                    Text(text = "Artwork Artist", fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold)
+                    Text(
+                        text = stringResource(currentArtist),
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
                     Spacer(modifier = Modifier.size(10.dp))
-                    Text(text = "(Year)")
+                    Text(text = stringResource(currentArtYear))
                 }
             }
         }
@@ -99,7 +140,7 @@ fun ArtSpaceScreen() {
             }
             Spacer(modifier = Modifier.width(10.dp))
             Button(
-                onClick = { /*TODO*/ },
+                onClick = { handleClickNext() },
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
